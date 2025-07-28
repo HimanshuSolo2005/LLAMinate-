@@ -34,4 +34,4 @@ RUN pip3 install -r requirements.txt
 EXPOSE 7860
 
 # Run the app
-CMD ["python3", "app.py"]
+CMD ["python3", "main.py"]
