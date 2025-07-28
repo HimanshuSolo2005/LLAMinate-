@@ -79,4 +79,6 @@ with gr.Blocks(theme=gr.themes.Base()) as demo:
 
     theme_choice.change(fn=update_theme, inputs=theme_choice, outputs=[], queue=False)
 
-demo.launch()
+if __name__ == "__main__":
+    demo.launch(server_name="0.0.0.0", server_port=8080)
+
