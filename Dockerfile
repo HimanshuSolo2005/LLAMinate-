@@ -1,37 +1,22 @@
-# Use Ubuntu base
-FROM ubuntu:22.04
+FROM python:3.11-slim
 
-# Avoid user interaction prompts
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install dependencies
 RUN apt-get update && apt-get install -y \
-    curl \
-    wget \
-    unzip \
-    python3 \
-    python3-pip \
-    git \
-    sudo \
-    && rm -rf /var/lib/apt/lists/*
+    curl gnupg lsb-release && \
+    apt-get clean
 
-# Install Ollama
 RUN curl -fsSL https://ollama.com/install.sh | sh
 
-# Pull LLaMA 3 model so it's ready
-RUN ollama pull llama3
+ENV PATH="/root/.ollama/bin:$PATH"
 
-# Set working directory
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . /app
 WORKDIR /app
 
-# Copy app files
-COPY . /app
-
-# Install Python dependencies
-RUN pip3 install -r requirements.txt
-
-# Expose Gradio port
 EXPOSE 7860
 
-# Run the app
-CMD ["python3", "main.py"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+CMD ["/entrypoint.sh"]
