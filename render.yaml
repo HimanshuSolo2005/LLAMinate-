@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: ollama-ai-app
+    runtime: docker
+    plan: starter
+    autoDeploy: true
+    region: oregon
+    healthCheckPath: /
+    dockerfilePath: ./Dockerfile
